@@ -22,7 +22,7 @@ select *
 				left join zendesk_ticket_metrics ztm on ztm.ticket_id = z.id
 				left join users u on za.drivy_user_id = u.id
 
-					where to_char(z.created_at, 'yyyy') = ---
+					where to_char(z.created_at, 'yyyy') = 2017
 					and z.group_id in (26474785, 26344589)
 					and (zs.role = 'end-user' or zs.role = 'agent')
 					and za.drivy_user_id in (931235, 931242, 1070381, 1221617, 1255079, 1257979, 1286202, 1287216, 1287255, 931231, 931238, 1070378, 1209360, 1255070, 1255085, 1284859, 1286222, 1287235, 1287266)
