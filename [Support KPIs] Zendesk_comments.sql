@@ -47,7 +47,7 @@ select *
 				and (zu.role='agent' or zu.role = 'admin'))i
 		
 		where year = 2017
-		and week in = ---
+		and week = ---
 		
 			group by i.id, i.ticket_id, i.is_public, i.channel, i.agent, i.group, i.organisation, i.day, i.week, i.month, i.year
 
