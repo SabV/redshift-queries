@@ -44,10 +44,11 @@ select *
 											order by z.created_at asc)t)t on t.id = ztc.ticket_id
 
 				where ztc.is_public is true
-				and (zu.role='agent' or zu.role = 'admin')
-				and u.locale = 'fr')i
+				and (zu.role='agent' or zu.role = 'admin'))i
 		
 		where year = 2017
-		and week = ---
+		and week in = ---
 		
-			order by year asc, week asc, day asc
+			group by i.id, i.ticket_id, i.is_public, i.channel, i.agent, i.group, i.organisation, i.day, i.week, i.month, i.year
+
+				order by year asc, week asc, day asc
