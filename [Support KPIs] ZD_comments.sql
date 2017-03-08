@@ -52,3 +52,4 @@ select *
 			group by i.id, i.ticket_id, i.is_public, i.channel, i.agent, i.group, i.organisation, i.day, i.week, i.month, i.year
 
 				order by year asc, week asc, day asc
+;
