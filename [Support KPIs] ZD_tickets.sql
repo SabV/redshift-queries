@@ -26,21 +26,7 @@ select *
 	else 'Drivy'
 	end as organisation,
 
-	zu.role = 'end-user' as submitter_is_user, to_char(z.created_at, 'DD') as day,
-
-	case when to_char(z.created_at, 'D') in (6,7,1) and to_char(dateadd(week, 1, z.created_at), 'IW') <= 52 then to_char(dateadd(week, 1, z.created_at), 'IW')
-	when to_char(z.created_at, 'D') in (6,7,1) and to_char(dateadd(week, 1, z.created_at), 'IW') > 52 then '01'
-	else to_char(z.created_at, 'IW')
-	end as week,
-
-	case when to_char(z.created_at, 'D') in (6,7,1) and to_char(dateadd(week, 1, z.created_at), 'IW') > 52 then '01'
-	else to_char(z.created_at, 'MM')
-	end as month,
-
-	case when to_char(z.created_at, 'D') in (6,7,1) and to_char(dateadd(week, 1, z.created_at), 'IW') > 52 then
-	to_char(dateadd(year,1,z.created_at), 'YYYY')
-	else to_char(z.created_at, 'YYYY')
-	end as year
+	zu.role = 'end-user' as submitter_is_user, to_char(convert_timezone('Europe/Paris', z.created_at), 'DD') as day, to_char(convert_timezone('Europe/Paris', z.created_at), 'IW') as week, to_char(convert_timezone('Europe/Paris', z.created_at), 'MM') as month, 	to_char(convert_timezone('Europe/Paris', z.created_at), 'YYYY') as year
 
 		from zendesk_tickets z
 		left join (select * from zendesk_ticket_tags zz where zz.tag_name like '%rental_flag%' or zz.tag_name like '%match_flag%' or zz.tag_name like '%car_flag%' or zz.tag_name like '%rental_message_flag%' or zz.tag_name like '%rental_message_flags%' or 				zz.tag_name like '%car_deactivation%' or zz.tag_name like '%sms_failure%' or zz.tag_name like '%car_flags%' or zz.tag_name like '%open_checkin_checkout%' group by zz.tag_name, zz.ticket_id)zt on zt.ticket_id=z.id
@@ -58,3 +44,4 @@ select *
 
 	where t.year = 2017
 	and t.week = ---
+;
