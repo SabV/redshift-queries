@@ -23,7 +23,7 @@ select *
 			else 'Drivy'
 			end as organisation,
 			
-			to_char(ztc.created_at, 'DD') as day, to_char(ztc.created_at, 'IW') as week, to_char(ztc.created_at, 'MM') as month, to_char(ztc.created_at, 'YYYY') as year
+			to_char(convert_timezone('Europe/Paris', ztc.created_at), 'DD') as day, to_char(convert_timezone('Europe/Paris', ztc.created_at), 'IW') as week, to_char(convert_timezone('Europe/Paris', ztc.created_at), 'MM') as month, to_char(convert_timezone('Europe/Paris', ztc.created_at), 'YYYY') as year
 
 				from zendesk_ticket_comments ztc
 				inner join zendesk_users zu on zu.id = ztc.author_id
