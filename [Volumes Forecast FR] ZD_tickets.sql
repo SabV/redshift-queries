@@ -1,14 +1,6 @@
 select *
 
-	from (	select case when to_char(z.created_at, 'D') in (6,7,1) and to_char(dateadd(week, 1, z.created_at), 'IW') > 52 then
-			to_char(dateadd(year,1,z.created_at), 'YYYY')
-			else to_char(z.created_at, 'YYYY')
-			end as year,
-
-			case when to_char(z.created_at, 'D') in (6,7,1) and to_char(dateadd(week, 1, z.created_at), 'IW') <= 52 then to_char(dateadd(week, 1, z.created_at), 'IW')
-			when to_char(z.created_at, 'D') in (6,7,1) and to_char(dateadd(week, 1, z.created_at), 'IW') > 52 then '01'
-			else to_char(z.created_at, 'IW')
-			end as week,
+	from (	select to_char(convert_timezone('Europe/Paris', z.created_at), 'YYYY') as year, to_char(convert_timezone('Europe/Paris', z.created_at), 'IW') as week,
 
 			case when z.group_id='26474785' then 'FR Flags'
 			when z.group_id='26344589' then 'FR Level 1'
@@ -24,7 +16,7 @@ select *
 				left join team_memberships tm on u.id = tm.user_id
 
 
-					where to_char(z.created_at, 'YYYY') = 2017
+					where to_char(convert_timezone('Europe/Paris', z.created_at), 'YYYY') = 2017
 					and ((z.group_id = '26474785' and zs.role = 'admin') or (z.group_id = '26344589' and zs.role = 'end-user'))
 					and tm.name = 'external_support'
 					and ztm.nb_replies is not null
@@ -32,3 +24,4 @@ select *
 						group by year, week, z.group_id)
 
 	where week = ---
+;
