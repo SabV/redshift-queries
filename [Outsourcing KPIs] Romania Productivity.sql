@@ -25,12 +25,14 @@ select *
 								or (t.action_type = 'suspicious_messages' and t.country='FR' and datediff(s, convert_timezone('Europe/Paris', s.created_at), convert_timezone('Europe/Paris', e.created_at)) < 1000)
 								or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality') and t.country in ('DE', 'ES', 'AT', 'BE') and datediff(s, convert_timezone('Europe/Paris', s.created_at), convert_timezone('Europe/Paris', 										e.created_at)) < 200))
 								and t.state='closed'
-								and to_char(convert_timezone('Europe/Paris', t.closed_at), 'YYYY') = 2017
-								and to_char(convert_timezone('Europe/Paris', t.closed_at), 'IW') = '09'
+
 			
 									group by u.first_name, s.created_at, e.created_at, t.closed_at, t.action_type, t.id)t
 			
 						group by t.agent, t.action_type, t.week, t.year)u
+			
+		where year = 2017
+		and week = ---
 			
 			order by agent asc,
 				
