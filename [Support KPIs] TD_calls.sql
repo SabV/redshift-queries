@@ -1,4 +1,4 @@
-select t.id, t.call_type, t.start_time, t.end_time, t.talkdesk_phone_number, t.customer_phone_number, t.duration, t.record, t.hangup, t.in_business_hours, t.waiting_time, t.agent_speed_to_answer, t.holding_time, t.description, t.agent_name, t.phone_display_name, t.disposition_code, t.transferred, t.handling_agent, t.ivr_options, t.customer_drivy_id, t.country, to_char(t.start_time, 'DD') as day, to_char(t.start_time, 'IW') as week, to_char(t.start_time, 'MM') as month, to_char(t.start_time, 'YYYY') as year, u.behavior,
+select t.id, t.call_type, convert_timezone('Europe/Paris', t.start_time), convert_timezone('Europe/Paris', t.end_time), t.talkdesk_phone_number, t.customer_phone_number, t.duration, t.record, t.hangup, t.in_business_hours, t.waiting_time, t.agent_speed_to_answer, t.holding_time, t.description, t.agent_name, t.phone_display_name, t.disposition_code, t.transferred, t.handling_agent, t.ivr_options, t.customer_drivy_id, t.country, to_char(convert_timezone('Europe/Paris', t.start_time), 'DD') as day, to_char(convert_timezone('Europe/Paris', t.start_time), 'IW') as week, to_char(convert_timezone('Europe/Paris', t.start_time), 'MM') as month, to_char(convert_timezone('Europe/Paris', t.start_time), 'YYYY') as year, u.behavior,
 
 case when t.phone_display_name = 'FR Support' and left(t.ivr_options, 1) = '1' then 'CLAIMS'
 when t.phone_display_name = 'FR Power & Pro Owners' and left(t.ivr_options, 1) = '1' then 'CLAIMS'
@@ -39,7 +39,8 @@ end as inbound
 	from talkdesk_calls t
 	left join users u on t.customer_drivy_id=u.id
 
-		where to_char(t.start_time, 'YYYY') = 2017
-		and to_char(t.start_time, 'IW') = ---
+		where to_char(convert_timezone('Europe/Paris', t.start_time), 'YYYY') = 2017
+		and to_char(convert_timezone('Europe/Paris', t.start_time), 'IW') = ---
 
 			order by t.start_time asc
+;
