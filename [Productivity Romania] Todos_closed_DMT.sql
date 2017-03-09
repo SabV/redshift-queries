@@ -13,7 +13,7 @@ select *
 			
 			count(t.id), round(avg(t.time_treat::float), 2) as dmt, t.week, t.year
 			
-				from	(select t.id, u.first_name as agent, datediff(s, convert_timezone('Europe/Paris', s.created_at), convert_timezone('Europe/Paris', e.created_at)) as time_treat, t.action_type, to_char(convert_timezone('Europe/Paris', t.closed_at), 'IW') 						as week, to_char(convert_timezone('Europe/Paris', t.closed_at), 'YYYY') as year
+				from	(select t.id, u.first_name as agent, datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) as time_treat, t.action_type, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'IW') 						as week, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'YYYY') as year
 			
 							from todos t
 							inner join todo_versions s on s.item_id=t.id and s.state_before = 'new' and s.state_after = 'going'
@@ -21,9 +21,9 @@ select *
 							inner join users u on e.whodunnit = u.id
 							inner join team_memberships tm on tm.user_id = u.id and tm.name = 'external_quality'
 			
-								where ((t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality') and t.country = 'FR' and datediff(s, convert_timezone('Europe/Paris', s.created_at), convert_timezone('Europe/Paris', 									e.created_at)) < 200)
-								or (t.action_type = 'suspicious_messages' and t.country='FR' and datediff(s, convert_timezone('Europe/Paris', s.created_at), convert_timezone('Europe/Paris', e.created_at)) < 1000)
-								or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality') and t.country in ('DE', 'ES', 'AT', 'BE') and datediff(s, convert_timezone('Europe/Paris', s.created_at), convert_timezone('Europe/Paris', 										e.created_at)) < 200))
+								where ((t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality') and t.country = 'FR' and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', 									e.created_at)) < 200)
+								or (t.action_type = 'suspicious_messages' and t.country='FR' and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 1000)
+								or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality') and t.country in ('DE', 'ES', 'AT', 'BE') and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', 										e.created_at)) < 200))
 								and t.state='closed'
 
 			
