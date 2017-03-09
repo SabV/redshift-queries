@@ -11,13 +11,13 @@ select *
 			count(t.id), 
 			
 			case
-			when (to_char(convert_timezone('Europe/Bucharest', t.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', t.created_at), 'HH24') >= 21 and to_char(dateadd(w, 1, convert_timezone('Europe/Bucharest', t.created_at)), 'IW') = 52) then 						to_char(dateadd(y, 1, convert_timezone('Europe/Bucharest', t.created_at)), 'YYYY')
+			when (to_char(convert_timezone('Europe/Bucharest', t.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', t.created_at), 'HH24') >= 21 and to_char(convert_timezone('Europe/Bucharest', t.created_at), 'IW') = 52) then 						to_char(dateadd(y, 1, convert_timezone('Europe/Bucharest', t.created_at)), 'YYYY')
 			else to_char(convert_timezone('Europe/Bucharest', t.created_at), 'YYYY')
 			end as year,
 						
 			case
 			when (to_char(convert_timezone('Europe/Bucharest', t.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', t.created_at), 'HH24') >= 21) then to_char(dateadd(w, 1, convert_timezone('Europe/Bucharest', t.created_at)), 'IW')
-			when (to_char(convert_timezone('Europe/Bucharest', t.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', t.created_at), 'HH24') >= 21 and to_char(dateadd(w, 1, convert_timezone('Europe/Bucharest', t.created_at)), 'IW') = 52) then '01'
+			when (to_char(convert_timezone('Europe/Bucharest', t.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', t.created_at), 'HH24') >= 21 and to_char(convert_timezone('Europe/Bucharest', t.created_at), 'IW') = 52) then '01'
 			else to_char(convert_timezone('Europe/Bucharest', t.created_at), 'IW')
 			end as week
 			
