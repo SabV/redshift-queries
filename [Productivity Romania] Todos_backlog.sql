@@ -1,8 +1,11 @@
-select count(distinct(u.id)), u.todo_type,
+select u.todo_type, count(distinct(u.id)),
 
-case
+case when u.backlog_year is null then '2017'
 
-when u.backlog_week is null then ---
+else u.backlog_year
+end as this_year,
+
+case when u.backlog_week is null then ---
 
 else u.backlog_week
 end as last_week
@@ -17,7 +20,7 @@ end as last_week
 						when t.action_type = 'suspicious_messages' then 'BS'
 						end as todo_type,
 						
-						t.id, tvn.version_week as new_week, tvn.version_year as new_year, tvc.version_week as closed_week, tvc.version_year as closed_year, tvc.backlog_week
+						t.id, tvn.version_week as new_week, tvn.version_year as new_year, tvc.version_week as closed_week, tvc.version_year as closed_year, tvc.backlog_week, tvc.backlog_year
 						
 							from todos t
 							
@@ -54,9 +57,18 @@ end as last_week
 										end as version_week,
 										
 										case
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') >= 21) then to_char(convert_timezone('Europe/Bucharest', tv.created_at), 										'IW')
+										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') >= 21) then to_char(convert_timezone('Europe/Bucharest', 														tv.created_at), 'IW')
+										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') < 21 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 											'IW') = '01') then '52'
+										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') <> 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'IW') = '01') then '52'
 										else to_char(dateadd(w, -1, convert_timezone('Europe/Bucharest', tv.created_at)), 'IW')
 										end as backlog_week,
+										
+										case
+										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') < 21 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 											'IW') = '01') then to_char(dateadd(y, -1, convert_timezone('Europe/Bucharest', tv.created_at)), 'YYYY')
+										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') <> 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'IW') = '01') then to_char(dateadd(y, -1, convert_timezone('Europe/Bucharest', 										tv.created_at)), 'YYYY')
+										else to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'YYYY')
+										end as backlog_year,
+
 										
 										tv.item_id
 										
@@ -78,14 +90,14 @@ end as last_week
 					
 					))u	
 					
-						group by u.todo_type, last_week
+						group by u.todo_type, last_week, this_year
 						
-						order by
-						case
-						when u.todo_type = 'NCC' then '01'
-						when u.todo_type = 'NCQ' then '02'
-						when u.todo_type = 'CPQ' then '03'
-						when u.todo_type = 'UPQ' then '04'
-						when u.todo_type = 'BS' then '05'
-						end asc
+							order by
+							case
+							when u.todo_type = 'NCC' then '01'
+							when u.todo_type = 'NCQ' then '02'
+							when u.todo_type = 'CPQ' then '03'
+							when u.todo_type = 'UPQ' then '04'
+							when u.todo_type = 'BS' then '05'
+							end asc
 ;
