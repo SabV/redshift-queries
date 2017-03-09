@@ -34,7 +34,7 @@ select *
 		where year = 2017
 		and week = ---
 			
-			order by agent asc,
+			order by year asc, week asc, agent asc,
 				
 			case when todo_type = 'NCC' then '01'
 			when todo_type = 'NCQ' then '02'
