@@ -28,14 +28,14 @@ select *
 					
 						group by year, week, t.action_type
 						
-					order by year, week,
-					case
-					when t.action_type = 'new_car_compliance' then '01'
-					when t.action_type = 'new_car_quality' then '02'
-					when t.action_type = 'car_photo_quality' then '03'
-					when t.action_type = 'avatar_quality' then '04'
-					when t.action_type = 'suspicious_messages' then '05'
-					end asc)t
+							order by year, week,
+							case
+							when t.action_type = 'new_car_compliance' then '01'
+							when t.action_type = 'new_car_quality' then '02'
+							when t.action_type = 'car_photo_quality' then '03'
+							when t.action_type = 'avatar_quality' then '04'
+							when t.action_type = 'suspicious_messages' then '05'
+							end asc)t
 
 		where year = 2017
 		and week = ---
