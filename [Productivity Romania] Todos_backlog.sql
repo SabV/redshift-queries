@@ -2,7 +2,7 @@ select count(distinct(u.id)), u.todo_type,
 
 case
 
-when u.backlog_week is null then '09'
+when u.backlog_week is null then ---
 
 else u.backlog_week
 end as last_week
@@ -70,11 +70,11 @@ end as last_week
 			
 					where t.new_year = 2017
 					
-					and t.new_week <= '09'
+					and t.new_week <= ---
 					
 					and (t.closed_week is null or t.closed_week > t.new_week or t.closed_year > t.new_year)
 					
-					and (t.backlog_week is null or t.backlog_week = '09'
+					and (t.backlog_week is null or t.backlog_week = ---
 					
 					))u	
 					
