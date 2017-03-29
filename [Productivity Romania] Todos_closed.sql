@@ -76,7 +76,8 @@ UNION
 									group by t.agent, t.action_type, t.week, t.year)u
 						
 					where year = 2017
-					and week = ---)f
+					and week = ---
+					)f
 				
 		order by year asc, week asc, agent asc,
 					
