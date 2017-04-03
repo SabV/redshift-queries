@@ -1,5 +1,5 @@
 select
-case when (r.registration_country='de' or r.registration_country='at') then 'DE-AT'
+case when (r.registration_country='DE' or r.registration_country='AT') then 'DE-AT'
 else r.registration_country
 end as country,
 to_char(convert_timezone('Europe/Paris', r.ends_at), 'IW') as week, to_char(convert_timezone('Europe/Paris', r.ends_at), 'MM') as month, to_char(convert_timezone('Europe/Paris', r.ends_at), 'YYYY') as year, count(distinct(r.id))
