@@ -5,7 +5,7 @@ case when u.backlog_year is null then '2017'
 else u.backlog_year
 end as this_year,
 
-case when u.backlog_week is null then ---
+case when u.backlog_week is null then ' --- '
 
 else u.backlog_week
 end as last_week
