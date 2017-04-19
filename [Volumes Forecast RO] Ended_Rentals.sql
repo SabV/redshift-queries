@@ -1,4 +1,4 @@
-select count(1), to_char(convert_timezone('Europe/Paris', ends_at), 'IW')
+select count(1)
 
 from rentals
 
