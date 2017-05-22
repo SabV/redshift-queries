@@ -9,6 +9,8 @@ FROM
 
    FROM talkdesk_calls t
    WHERE t.in_business_hours IS TRUE -- INBOUND ONLY
+   AND to_char(convert_timezone('Europe/Paris', t.start_time), 'HH24:MI') between '09:30' and '19:00'
+
 AND t.call_type NOT IN ('outbound',
                         'outbound_missed')
      AND t.phone_display_name IN ('FR Webhelp > Support',
@@ -36,6 +38,7 @@ date_trunc('week', convert_timezone('Europe/Paris', t.start_time)) AS year_week,
 
       FROM talkdesk_calls t
 WHERE t.in_business_hours IS TRUE -- INBOUND ONLY
+AND to_char(convert_timezone('Europe/Paris', t.start_time), 'HH24:MI') between '09:30' and '19:00'
 AND t.call_type NOT IN ('outbound',
                         'outbound_missed')
 AND date_trunc('week', convert_timezone('Europe/Paris', t.start_time)) >= date_trunc('week', convert_timezone('Europe/Paris', '2016-11-01 00:00:00')))
