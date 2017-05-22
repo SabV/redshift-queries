@@ -49,6 +49,7 @@ WHERE phone_display_name IN ('DE Support',
                                                                                      'DE Open Support',
                                                                                      'AT Support',
                                                                                      'DE Webhelp > Support')
+      AND left(ivr_options, 1) <> 1
       AND agent_name IN ('Robert',
                          'Jasmin',
                          'Julia M',
@@ -68,6 +69,7 @@ UNION ALL
 FROM talkdesk_calls
 WHERE phone_display_name IN ('ES Support',
                                                                                         'ES Open Support')
+       AND left(ivr_options, 1) <> 1
       AND agent_name IN ('Dulce Amor',
                          'Mariela',
                          'Luis',
@@ -85,6 +87,7 @@ UNION ALL
 (SELECT date_trunc('week', convert_timezone('Europe/Paris', start_time)) as year_week, disposition_code, count(1), 'inbounds' as type, 'BE' as country
 FROM talkdesk_calls
 WHERE phone_display_name = 'BE Support'
+        AND left(ivr_options, 1) <> 1
       AND agent_name IN ('Victor',
                          'Lionel',
                          'If-No-Answer Agent')
