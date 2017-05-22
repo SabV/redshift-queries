@@ -14,7 +14,8 @@ FROM
 
       FROM talkdesk_calls t
       WHERE t.in_business_hours IS TRUE
-        AND t.call_type NOT IN ('outbound',
+		AND to_char(convert_timezone('Europe/Paris', t.start_time), 'HH24:MI') between '09:30' and '19:00'
+		AND t.call_type NOT IN ('outbound',
                                 'outbound_missed',
                                 'short_abandoned')
         AND t.phone_display_name IN ('FR Webhelp > Support',
@@ -42,6 +43,7 @@ to_char(convert_timezone('Europe/Paris', t.start_time), 'D') as day,
 to_char(convert_timezone('Europe/Paris', t.start_time), 'HH24') as hour
          FROM talkdesk_calls t
 WHERE t.in_business_hours IS TRUE
+		AND to_char(convert_timezone('Europe/Paris', t.start_time), 'HH24:MI') between '09:30' and '19:00'
 AND t.call_type NOT IN ('outbound',
                         'outbound_missed',
                         'short_abandoned'))
