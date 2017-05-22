@@ -36,7 +36,7 @@ UNION ALL -- + Other Countries
                                                     'DE Open Support',
                                                     'AT Support')
                            AND NOT (t.phone_display_name = 'DE Support'
-                                    AND t.ivr_options = '3')) THEN 'DE-AT' WHEN (t.phone_display_name IN ('ES Support',
+                                    AND t.ivr_options in (1, 3))) THEN 'DE-AT' WHEN (t.phone_display_name IN ('ES Support',
                                                                                                          'ES Open Support') AND t.ivr_options <> 1) THEN 'ES' WHEN (t.phone_display_name = 'BE Support' and t.ivr_options <> 1) THEN 'BE' ELSE 'ELSE' END AS country,
 date_trunc('week', convert_timezone('Europe/Paris', t.start_time)) AS year_week,
 to_char(convert_timezone('Europe/Paris', t.start_time), 'D') as day,
