@@ -66,8 +66,7 @@ UNION ALL
 
 (SELECT date_trunc('week', convert_timezone('Europe/Paris', start_time)) as year_week, disposition_code, count(1), 'inbounds' as type, 'ES' as country
 FROM talkdesk_calls
-WHERE ((phone_display_name = 'ES Support' AND left(ivr_options, 1) <> 1) OR phone_display_name IN ('ES Support',
-                                                                                        'ES Open Support'))
+WHERE ((phone_display_name = 'ES Support' AND left(ivr_options, 1) <> 1) OR phone_display_name  = 'ES Open Support')
       AND agent_name IN ('Dulce Amor',
                          'Mariela',
                          'Luis',
