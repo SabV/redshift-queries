@@ -51,4 +51,5 @@ WHERE country <> 'ELSE'
              year_week, day, hour))
              
 WHERE year_week = date_trunc('week', dateadd(w, -1, convert_timezone('Europe/Paris', CURRENT_DATE)))
+AND day NOT IN (7, 1)
 ORDER BY "country::filter" DESC
