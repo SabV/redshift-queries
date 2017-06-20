@@ -1,103 +1,69 @@
-select u.todo_type, count(distinct(u.id)),
+select sum(backlog), action_type, year_created, week_created
 
-case when u.backlog_year is null then '2017'
+from (select case when t.action_type = 'avatar_quality' then 'UPQ'
+when t.action_type = 'car_photo_quality' then 'CPQ'
+when t.action_type = 'suspicious_messages' then 'BS'
+when t.action_type = 'new_car_compliance' then 'NCC'
+when t.action_type = 'new_car_quality' then 'NCQ'
+end as action_type,
 
-else u.backlog_year
-end as this_year,
-
-case when u.backlog_week is null then ' --- '
-
-else u.backlog_week
-end as last_week
-
-	from	(select *
-	
-				from	(select case
-						when t.action_type = 'new_car_compliance' then 'NCC'
-						when t.action_type = 'new_car_quality' then 'NCQ'
-						when t.action_type = 'car_photo_quality' then 'CPQ'
-						when t.action_type = 'avatar_quality' then 'UPQ'
-						when t.action_type = 'suspicious_messages' then 'BS'
-						end as todo_type,
-						
-						t.id, tvn.version_week as new_week, tvn.version_year as new_year, tvc.version_week as closed_week, tvc.version_year as closed_year, tvc.backlog_week, tvc.backlog_year
-						
-							from todos t
-							
-							inner join	(select tv.id as version_id,
-										
-										case
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') >= 21 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 										'IW') = 52) then to_char(dateadd(y, 1, convert_timezone('Europe/Bucharest', tv.created_at)), 'YYYY')
-										else to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'YYYY')
-										end as version_year,
-									
-										case
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') >= 21 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 										'IW') < 52) then to_char(dateadd(w, 1, convert_timezone('Europe/Bucharest', tv.created_at)), 'IW')
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') >= 21 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 										'IW') = 52) then '01'
-										else to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'IW')
-										end as version_week,
-										
-										tv.item_id
-										
-											from todo_versions tv
-										
-												where tv.event = 'create')tvn on tvn.item_id = t.id
-										
-							left join	(select tv.id as version_id,
-										
-										case
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') >= 21 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 										'IW') = 52) then to_char(dateadd(y, 1, convert_timezone('Europe/Bucharest', tv.created_at)), 'YYYY')
-										else to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'YYYY')
-										end as version_year,
-									
-										case
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') >= 21) then to_char(dateadd(w, 1, convert_timezone('Europe/Bucharest', 										tv.created_at)), 'IW')
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') >= 21 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 										'IW') = 52) then '01'
-										else to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'IW')
-										end as version_week,
-										
-										case
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') >= 21) then to_char(convert_timezone('Europe/Bucharest', 														tv.created_at), 'IW')
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') < 21 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 											'IW') = '01') then '52'
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') <> 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'IW') = '01') then '52'
-										else to_char(dateadd(w, -1, convert_timezone('Europe/Bucharest', tv.created_at)), 'IW')
-										end as backlog_week,
-										
-										case
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'HH24') < 21 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 											'IW') = '01') then to_char(dateadd(y, -1, convert_timezone('Europe/Bucharest', tv.created_at)), 'YYYY')
-										when (to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'D') <> 1 and to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'IW') = '01') then to_char(dateadd(y, -1, convert_timezone('Europe/Bucharest', 										tv.created_at)), 'YYYY')
-										else to_char(convert_timezone('Europe/Bucharest', tv.created_at), 'YYYY')
-										end as backlog_year,
-
-										
-										tv.item_id
-										
-											from todo_versions tv
-										
-												where tv.state_after = 'closed')tvc  on tvc.item_id = t.id
-										
-						
-								where ((t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'suspicious_messages') and t.country = 'FR')
-								or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality') and t.country in ('DE', 'ES', 'AT', 'BE'))))t
+w.year_created, w.week_created, t.id,
 			
-					where t.new_year = 2017
-					
-					and t.new_week <= ---
-					
-					and (t.closed_week is null or t.closed_week > t.new_week or t.closed_year > t.new_year)
-					
-					and (t.backlog_week is null or t.backlog_week = ---
-					
-					))u	
-					
-						group by u.todo_type, last_week, this_year
-						
-							order by
-							case
-							when u.todo_type = 'NCC' then '01'
-							when u.todo_type = 'NCQ' then '02'
-							when u.todo_type = 'CPQ' then '03'
-							when u.todo_type = 'UPQ' then '04'
-							when u.todo_type = 'BS' then '05'
-							end asc
-;
+case when t.date_created <= w.date_created and t.date_closed > w.date_created then 1 else 0 end as backlog,
+			
+t.date_created, t.date_closed
+
+from (select *
+
+from (select t.id, t.action_type, t.country, t.locale, t.state,
+
+case when to_char(convert_timezone('Europe/Paris', t.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Paris', t.created_at), 'HH24') >= 21 then date_trunc('week', dateadd(w, 1, convert_timezone('Europe/Paris', t.created_at)))
+else date_trunc('week', convert_timezone('Europe/Paris', t.created_at))
+end as date_created,
+
+case when t.closed_at is null then date_trunc('week', convert_timezone('Europe/Paris', current_date))
+else date_trunc('week', convert_timezone('Europe/Paris', t.closed_at))
+end as date_closed
+
+from todos t 
+
+where ((t.country = 'FR' and t.locale = 'fr' and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'new_car_quality', 'suspicious_messages')) or
+(t.country in ('BE', 'DE', 'AT', 'ES') and t.locale in ('fr_BE', 'nl_BE', 'de_AT', 'de', 'es') and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality')))
+and t.created_at >= '2017-02-27'
+and state <> 'canceled')
+											
+where date_created < date_closed)t
+
+left join (select to_char(date_created, 'IW') as week_created, to_char(date_created, 'YYYY') as year_created, date_created
+
+from (select t.id, t.action_type, t.country, t.locale, t.state,
+
+case when to_char(convert_timezone('Europe/Paris', t.created_at), 'D') = 1 and to_char(convert_timezone('Europe/Paris', t.created_at), 'HH24') >= 21 then date_trunc('week', dateadd(w, 1, convert_timezone('Europe/Paris', t.created_at)))
+else date_trunc('week', convert_timezone('Europe/Paris', t.created_at))
+end as date_created,
+
+case when t.closed_at is null then date_trunc('week', convert_timezone('Europe/Paris', current_date))
+else date_trunc('week', convert_timezone('Europe/Paris', t.closed_at))
+end as date_closed
+
+from todos t 
+
+where ((t.country = 'FR' and t.locale = 'fr' and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'new_car_quality', 'suspicious_messages')) or
+(t.country in ('BE', 'DE', 'AT', 'ES') and t.locale in ('fr_BE', 'nl_BE', 'de_AT', 'de', 'es') and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality')))
+and t.created_at >= '2017-02-27'
+and state <> 'canceled')
+
+where date_created < date_closed
+
+group by week_created, year_created, date_created, date_closed)w on 1=1
+
+group by w.week_created, w.year_created, t.action_type, t.id, backlog, t.date_created, t.date_closed
+
+order by t.id, t.action_type, w.week_created)
+
+where year_created = 2017
+and week_created = ---
+
+group by action_type, year_created, week_created
+
+order by year_created, week_created, action_type
