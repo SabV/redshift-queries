@@ -1,4 +1,4 @@
-select sum(backlog), action_type, year_created, week_created
+select action_type, sum(backlog), year_created, week_created
 
 from (select case when t.action_type = 'avatar_quality' then 'UPQ'
 when t.action_type = 'car_photo_quality' then 'CPQ'
