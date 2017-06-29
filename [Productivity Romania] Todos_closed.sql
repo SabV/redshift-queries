@@ -19,7 +19,7 @@ select *
 						
 						count(distinct(t.id)) as count, t.week, t.year
 						
-							from	(select t.id, u.first_name as agent, t.action_type, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'IW') as week, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'YYYY') as year
+							from	(select t.id, case when u.first_name = 'Andreea' then u.first_name || ' ' || left(u.last_name, 1) else u.first_name end as agent, t.action_type, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'IW') as week, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'YYYY') as year
 						
 										from todos t
 										inner join todo_versions e on e.item_id = t.id and e.state_before = 'going' and e.state_after = 'closed'
@@ -31,12 +31,12 @@ select *
 											
 											and t.state='closed'
 			
-												group by u.first_name, e.created_at, t.closed_at, t.action_type, t.id)t
+												group by u.first_name, u.last_name, e.created_at, t.closed_at, t.action_type, t.id)t
 						
 									group by t.agent, t.action_type, t.week, t.year)u
 						
 					where year = 2017
-					and week = ---		
+					and week = ---
 	
 UNION
 	
@@ -57,7 +57,7 @@ UNION
 						
 						count(distinct(t.id)) as count, t.week, t.year
 						
-							from	(select t.id, u.first_name as agent, t.action_type, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'IW') as week, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'YYYY') as year
+							from	(select t.id, case when u.first_name = 'Andreea' then u.first_name || ' ' || left(u.last_name, 1) else u.first_name end as agent, t.action_type, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'IW') as week, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'YYYY') as year
 						
 										from todos t
 										inner join todo_versions g on g.item_id = t.id and g.state_before = 'going' and g.state_after = 'going'
@@ -71,7 +71,7 @@ UNION
 											
 											and t.state='closed'
 			
-												group by u.first_name, e.created_at, t.closed_at, t.action_type, t.id)t
+												group by u.first_name, u.last_name, e.created_at, t.closed_at, t.action_type, t.id)t
 						
 									group by t.agent, t.action_type, t.week, t.year)u
 						
