@@ -19,7 +19,7 @@ select *
 					
 						count(distinct(t.id)), round(avg(t.time_treat::float), 2) as dmt, t.week, t.year
 					
-							from	(select t.id, u.first_name as agent, datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) as time_treat, t.action_type, 																				to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'IW') as week, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'YYYY') as year
+							from	(select t.id, case when u.first_name = 'Andreea' then u.first_name || ' ' || left(u.last_name, 1) else u.first_name end as agent, datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) as time_treat, t.action_type, 																				to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'IW') as week, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'YYYY') as year
 					
 										from todos t
 										inner join todo_versions s on s.item_id=t.id and s.state_before = 'new' and s.state_after = 'going'
@@ -32,7 +32,7 @@ select *
 											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality') and t.country in ('DE', 'ES', 'AT', 'BE') and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), 																	convert_timezone('Europe/Bucharest', e.created_at)) < 200))
 											and t.state='closed'
 					
-												group by u.first_name, s.created_at, e.created_at, t.closed_at, t.action_type, t.id)t
+												group by u.first_name, u.last_name, s.created_at, e.created_at, t.closed_at, t.action_type, t.id)t
 						
 								group by t.agent, t.action_type, t.week, t.year)u
 					
@@ -58,7 +58,7 @@ UNION
 					
 						count((t.id)), round(avg(t.time_treat::float), 2) as dmt, t.week, t.year
 					
-							from	(select t.id, u.first_name as agent, datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) as time_treat, t.action_type,																				to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'IW') as week, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'YYYY') as year
+							from	(select t.id, case when u.first_name = 'Andreea' then u.first_name || ' ' || left(u.last_name, 1) else u.first_name end as agent, datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) as time_treat, t.action_type,																				to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'IW') as week, to_char(convert_timezone('Europe/Bucharest', t.closed_at), 'YYYY') as year
 					
 										from todos t
 										inner join todo_versions s on s.item_id=t.id and s.state_before = 'new' and s.state_after = 'going'
@@ -71,7 +71,7 @@ UNION
 											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality') and t.country in ('DE', 'ES', 'AT', 'BE') and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), 																	convert_timezone('Europe/Bucharest', e.created_at)) < 200))
 		
 					
-												group by u.first_name, s.created_at, e.created_at, t.closed_at, t.action_type, t.id)t
+												group by u.first_name, u.last_name, s.created_at, e.created_at, t.closed_at, t.action_type, t.id)t
 					
 								group by t.agent, t.action_type, t.week, t.year)u
 					
