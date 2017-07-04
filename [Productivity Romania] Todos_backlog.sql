@@ -5,6 +5,9 @@ when t.action_type = 'car_photo_quality' then 'CPQ'
 when t.action_type = 'suspicious_messages' then 'BS'
 when t.action_type = 'new_car_compliance' then 'NCC'
 when t.action_type = 'new_car_quality' then 'NCQ'
+when t.action_type = 'driver_vetting' then 'DV'
+when t.action_type = 'driver_vetting_urgent' then 'DVU'
+when t.action_type = 'license_issue_date' then 'LID'
 end as action_type,
 
 w.year_created, w.week_created, t.id,
@@ -27,8 +30,8 @@ end as date_closed
 
 from todos t 
 
-where ((t.country = 'FR' and t.locale = 'fr' and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'new_car_quality', 'suspicious_messages')) or
-(t.country in ('BE', 'DE', 'AT', 'ES') and t.locale in ('fr_BE', 'nl_BE', 'de_AT', 'de', 'es') and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality')))
+where ((t.country = 'FR' and t.locale = 'fr' and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'new_car_quality', 'suspicious_messages', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date')) or
+(t.country in ('BE', 'DE', 'AT', 'ES') and t.locale in ('fr_BE', 'nl_BE', 'de_AT', 'de', 'es') and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date')))
 and t.created_at >= '2017-02-27'
 and state <> 'canceled')
 											
@@ -48,8 +51,8 @@ end as date_closed
 
 from todos t 
 
-where ((t.country = 'FR' and t.locale = 'fr' and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'new_car_quality', 'suspicious_messages')) or
-(t.country in ('BE', 'DE', 'AT', 'ES') and t.locale in ('fr_BE', 'nl_BE', 'de_AT', 'de', 'es') and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality')))
+where ((t.country = 'FR' and t.locale = 'fr' and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'new_car_quality', 'suspicious_messages', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date')) or
+(t.country in ('BE', 'DE', 'AT', 'ES') and t.locale in ('fr_BE', 'nl_BE', 'de_AT', 'de', 'es') and t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date')))
 and t.created_at >= '2017-02-27'
 and state <> 'canceled')
 
