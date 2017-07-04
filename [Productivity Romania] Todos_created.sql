@@ -6,6 +6,9 @@ select *
 			when t.action_type = 'car_photo_quality' then 'CPQ'
 			when t.action_type = 'avatar_quality' then 'UPQ'
 			when t.action_type = 'suspicious_messages' then 'BS'
+			when t.action_type = 'driver_vetting' then 'DV'
+			when t.action_type = 'driver_vetting_urgent' then 'DVU'
+			when t.action_type = 'license_date_issue' then 'LID'
 			end as todo_type,
 			
 			count(t.id), 
@@ -23,8 +26,8 @@ select *
 			
 				from todos t
 			
-					where ((t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'suspicious_messages') and t.country = 'FR')
-					or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality') and t.country in ('DE', 'ES', 'AT', 'BE')))
+					where ((t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'suspicious_messages', 'driver_vetting', 'driver_vetting_urgent', 'license_date_issue') and t.country = 'FR')
+					or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'driver_vetting', 'driver_vetting_urgent', 'license_date_issue') and t.country in ('DE', 'ES', 'AT', 'BE')))
 					
 						group by year, week, t.action_type
 						
@@ -35,6 +38,9 @@ select *
 							when t.action_type = 'car_photo_quality' then '03'
 							when t.action_type = 'avatar_quality' then '04'
 							when t.action_type = 'suspicious_messages' then '05'
+							when t.action_type = 'driver_vetting' then '06'
+							when t.action_type = 'driver_vetting_urgent' then '07'
+							when t.action_type = 'license_date_issue' then '08'
 							end asc)t
 
 		where year = 2017
