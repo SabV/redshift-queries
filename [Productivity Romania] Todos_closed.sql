@@ -15,7 +15,7 @@ select *
 						when t.action_type = 'suspicious_messages' then 'BS'
 						when t.action_type = 'driver_vetting' then 'DV'
 						when t.action_type = 'driver_vetting_urgent' then 'DVU'
-						when t.action_type = 'license_issue_date' then 'LID'
+						when t.action_type = 'license_issue_date_verification' then 'LID'
 						else t.action_type
 						end as todo_type,
 						
@@ -29,8 +29,8 @@ select *
 										inner join users u on u.id = e.whodunnit
 										inner join team_memberships tm on tm.user_id = e.whodunnit and tm.name = 'external_quality'
 						
-											where (t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'suspicious_messages', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date') and t.country = 'FR')
-											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date') and t.country in ('DE', 'ES', 'AT', 'BE'))
+											where (t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'suspicious_messages', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date_verification') and t.country = 'FR')
+											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date_verification') and t.country in ('DE', 'ES', 'AT', 'BE'))
 											
 											and t.state='closed'
 			
@@ -56,7 +56,7 @@ UNION
 						when t.action_type = 'suspicious_messages' then 'BS'
 						when t.action_type = 'driver_vetting' then 'DV'
 						when t.action_type = 'driver_vetting_urgent' then 'DVU'
-						when t.action_type = 'license_issue_date' then 'LID'
+						when t.action_type = 'license_issue_date_verification' then 'LID'
 						else t.action_type
 						end as todo_type,
 						
@@ -72,8 +72,8 @@ UNION
 										inner join users uc on uc.id = g.user_id_after and uc.is_admin = 1
 										inner join team_memberships tm on tm.user_id = g.whodunnit and tm.name = 'external_quality'
 						
-											where (t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'suspicious_messages', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date') and t.country = 'FR')
-											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date') and t.country in ('DE', 'ES', 'AT', 'BE'))
+											where (t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'suspicious_messages', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date_verification') and t.country = 'FR')
+											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'driver_vetting', 'driver_vetting_urgent', 'license_issue_date_verification') and t.country in ('DE', 'ES', 'AT', 'BE'))
 											
 											and t.state='closed'
 			
