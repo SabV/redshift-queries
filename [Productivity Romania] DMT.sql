@@ -15,7 +15,7 @@ select *
 						when t.action_type = 'suspicious_messages' then 'BS'
 						when t.action_type = 'driver_vetting' then 'DV'
 						when t.action_type = 'driver_vetting_urgent' then 'DVU'
-						when t.action_type = 'license_issue_date' then 'LID'
+						when t.action_type = 'license_issue_date_verification' then 'LID'
 						else t.action_type
 						end as todo_type,
 					
@@ -30,10 +30,10 @@ select *
 										inner join users u on e.whodunnit = u.id
 										inner join team_memberships tm on tm.user_id = u.id and tm.name = 'external_quality'
 					
-											where ((t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'license_issue_date') and t.country = 'FR' and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 200)
+											where ((t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'license_issue_date_verification') and t.country = 'FR' and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 200)
 											or (t.action_type in ('driver_vetting', 'driver_vetting_urgent') and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), 																	convert_timezone('Europe/Bucharest', e.created_at)) < 500)
 											or (t.action_type = 'suspicious_messages' and t.country='FR' and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 1000)
-											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'license_issue_date') and t.country in ('DE', 'ES', 'AT', 'BE') and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 200))
+											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'license_issue_date_verification') and t.country in ('DE', 'ES', 'AT', 'BE') and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 200))
 											and t.state='closed'
 					
 												group by u.first_name, u.last_name, s.created_at, e.created_at, t.closed_at, t.action_type, t.id)t
@@ -58,7 +58,7 @@ UNION
 						when t.action_type = 'suspicious_messages' then 'BS'
 						when t.action_type = 'driver_vetting' then 'DV'
 						when t.action_type = 'driver_vetting_urgent' then 'DVU'
-						when t.action_type = 'license_issue_date' then 'LID'
+						when t.action_type = 'license_issue_date_verification' then 'LID'
 						else t.action_type
 						end as todo_type,
 					
@@ -73,10 +73,10 @@ UNION
 										inner join users u on e.whodunnit = u.id
 										inner join team_memberships tm on tm.user_id = u.id and tm.name = 'external_quality'
 						
-											where ((t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'license_issue_date') and t.country = 'FR' and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 200)
+											where ((t.action_type in ('new_car_compliance', 'new_car_quality', 'car_photo_quality', 'avatar_quality', 'license_issue_date_verification') and t.country = 'FR' and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 200)
 											or (t.action_type in ('driver_vetting', 'driver_vetting_urgent') and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), 																	convert_timezone('Europe/Bucharest', e.created_at)) < 500)
 											or (t.action_type = 'suspicious_messages' and t.country='FR' and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 1000)
-											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'license_issue_date') and t.country in ('DE', 'ES', 'AT', 'BE') and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 200))
+											or (t.action_type in ('new_car_compliance', 'car_photo_quality', 'avatar_quality', 'license_issue_date_verification') and t.country in ('DE', 'ES', 'AT', 'BE') and datediff(s, convert_timezone('Europe/Bucharest', s.created_at), convert_timezone('Europe/Bucharest', e.created_at)) < 200))
 		
 					
 												group by u.first_name, u.last_name, s.created_at, e.created_at, t.closed_at, t.action_type, t.id)t
