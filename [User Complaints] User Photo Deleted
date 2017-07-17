@@ -1,6 +1,7 @@
-select 'https://drivy.imgix.net/uploads/originals/' || split_part(split_part(uv.object_changes, '/uploads/originals/', 2), '.jpg', 1) || '.jpg'
+select case when uv.object_changes like '%.jpg", null]%' then 'https://drivy.imgix.net/uploads/originals/' || split_part(split_part(uv.object_changes, '/uploads/originals/', 2), '.jpg', 1) || '.jpg'
+when uv.object_changes like '%.jpeg", null]%' then 'https://drivy.imgix.net/uploads/originals/' || split_part(split_part(uv.object_changes, '/uploads/originals/', 2), '.jpeg', 1) || '.jpeg' end as bo_link
 from user_versions uv
 where to_char(uv.created_at, 'YYYY-MM-DD') = '____-__-__'
-and uv.item_id = '________'
+and uv.item_id = '_______'
 and uv.whodunnit <> uv.item_id
-and uv.object_changes like '%.jpg", null]%'
+and (uv.object_changes like '%.jpg", null]%' or uv.object_changes like '%.jpeg", null]%')
