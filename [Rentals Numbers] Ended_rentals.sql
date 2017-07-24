@@ -9,7 +9,6 @@ to_char(convert_timezone('Europe/Paris', r.ends_at), 'IW') as week, to_char(conv
 		where r.state='ended'
 		and r.registration_country in ( 'FR', 'BE', 'AT', 'DE', 'ES')
 		and to_char(convert_timezone('Europe/Paris', r.ends_at), 'YYYY') = 2017
-		and to_char(convert_timezone('Europe/Paris', r.ends_at), 'IW') = ---
-
+		and date_trunc('week', convert_timezone('Europe/Paris', r.ends_at)) = dateadd(w, -1, date_trunc('week', convert_timezone('Europe/Paris', current_date)))
 			group by country, week, month, year
 ;
