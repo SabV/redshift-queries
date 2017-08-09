@@ -27,6 +27,7 @@ AND agent_name IN ('Caroline',
                          'Imane',
                          'Jamal',
                          'Laura Gagne',
+                         'Inci',
                          'Lionel',
                          'Melody',
                          'Sabrina',
@@ -72,6 +73,8 @@ WHERE ((phone_display_name = 'ES Support' AND left(ivr_options, 1) <> 1) OR phon
       AND agent_name IN ('Dulce Amor',
                          'Mariela',
                          'Luis',
+                         'Celia',
+                         'Alejandro',
                          'If-No-Answer Agent')
 AND disposition_code is not null
 AND disposition_code <> 'Not Found'
